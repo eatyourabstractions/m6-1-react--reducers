@@ -7,11 +7,14 @@ import { range } from '../utils';
 
 import {SeatContext} from './SeatContext';
 
-import {ReactComponent as Seat} from '../assets/seat-available.svg';
+// import {ReactComponent as SingleSeat} from '../assets/seat-available.svg';
 
+import Seat from './Seat';
 
+import PurchaseModal from './PurchaseModal';
+ 
 
-import Tippy from '@tippyjs/react'
+// import Tippy from '@tippyjs/react'
 
 const TicketWidget = () => {
   // TODO: use values from Context
@@ -22,6 +25,14 @@ const TicketWidget = () => {
 
   // TODO: implement the loading spinner <CircularProgress />
   // with the hasLoaded flag
+
+    // exercise 5
+   /*<SeatWrapper key={seatId} isBooked={state.seats[seatId].isBooked}>
+                 
+                  <BlackTippy arrow={true} content={`Row ${rowIndex}, ${seatId} - ${state.seats[seatId].price}`}>
+                    <Seat/>
+                  </BlackTippy>
+              </SeatWrapper> */
 
   return (
       <Wrapper>
@@ -36,11 +47,16 @@ const TicketWidget = () => {
               const seatId = `${rowName}-${getSeatNum(seatIndex)}`;
 
               return (
-                <SeatWrapper key={seatId} isBooked={state.seats[seatId].isBooked}>
-                  {/* TODO: Render the actual <Seat /> */}
-                  <BlackTippy arrow={true} content={`Row ${rowIndex}, ${seatId} - ${state.seats[seatId].price}`}>
-                    <Seat/>
-                  </BlackTippy>
+                <SeatWrapper key={seatId}>
+                  <PurchaseModal/>
+                  <Seat
+                    rowIndex={rowIndex}
+                    seatId={seatId}
+                    width={36}
+                    height={36}
+                    price={state.seats[seatId].price}
+                    status={state.seats[seatId].isBooked}
+                      />
                 </SeatWrapper>
               );
             })}
@@ -54,12 +70,7 @@ const TicketWidget = () => {
   );
 };
 
-const BlackTippy = styled(Tippy)`
-  background: black;
-  padding: 5px;
-  border-radius: 5px;
-  
-`;
+
 
 const Wrapper = styled.div`
   background: #eee;
@@ -83,7 +94,9 @@ const RowLabel = styled.div`
 
 const SeatWrapper = styled.div`
   padding: 5px;
-  filter: ${props => props.isBooked ? 'grayscale(100%)' : 'grayscale(0%)'};
+
 `;
 
 export default TicketWidget;
+
+
